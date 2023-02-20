@@ -1,0 +1,2 @@
+# TrainingMemory_FRONT
+フロントエンドファイル
