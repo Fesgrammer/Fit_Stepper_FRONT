@@ -1,26 +1,19 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h1>各ページへのリンク＜動作確認用＞</h1>
+    <hr />
+    <a href="home.html" target="_blank">ホーム・育成</a><br />
+    <a href="regist.html" target="_blank">運動記録登録</a><br />
+    <a href="history.html" target="_blank">運動履歴</a><br />
+    <a href="ranking.html" target="_blank">ランキング</a><br />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
