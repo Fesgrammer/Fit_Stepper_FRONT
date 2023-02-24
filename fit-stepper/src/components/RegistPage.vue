@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>記録登録画面</h1>
     <div class="v104_3">
       <div class="v104_12">
         <div class="v104_13"></div>
