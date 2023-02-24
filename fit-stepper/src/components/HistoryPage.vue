@@ -181,7 +181,6 @@ export default {
         } else {
           const responseData = await response.json();
           this.recordList = responseData;
-          console.log(this.recordList);
         }
       } catch (errMsg) {
         alert(errMsg);

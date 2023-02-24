@@ -82,8 +82,6 @@ export default {
       this.userId = this.cookies.get("userId");
     }
 
-    console.log(this.userId);
-
     let url;
     let errMsg;
 
@@ -135,13 +133,11 @@ export default {
   },
   methods: {
     selectBui: function (id, name) {
-      console.log("選択されました！");
       this.selectedBuiId = id;
       this.selectedBuiName = name;
       this.goToEventList();
     },
     selectEvent: function (id, name) {
-      console.log("選択されました。");
       this.slectedEventId = id;
       this.selectedEventName = name;
       this.goToInputArea();
