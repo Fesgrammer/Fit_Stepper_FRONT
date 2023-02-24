@@ -17,25 +17,11 @@
         <div class="v104_11"></div>
       </div>-->
       <div class="targetListArea">
-        <div class="targetList">
+        <div v-for="i of targetData" :key="i" class="targetList">
           <div class="targetListInner">
-            <p>上腕2</p>
-            <p>次のレベル：</p>
-            <p>次のレベルまであと、</p>
-          </div>
-        </div>
-        <div class="targetList">
-          <div class="targetListInner">
-            <p>上腕3</p>
-            <p>次のレベル：</p>
-            <p>次のレベルまであと、00</p>
-          </div>
-        </div>
-        <div class="targetList">
-          <div class="targetListInner">
-            <p>胸</p>
-            <p>次のレベル：</p>
-            <p>次のレベルまであと、00</p>
+            <p>{{ i.bui_name }}</p>
+            <p>次のレベル：{{ i.next_level }}</p>
+            <p>次のレベルまであと、{{ i.need_amount }}</p>
           </div>
         </div>
       </div>
@@ -55,9 +41,8 @@ export default {
       ],
       userData: null,
       targetData: [
-        { bui_id: 1, need_amount: 30 },
-        { bui_id: 2, need_amount: 10 },
-        { bui_id: 2, need_amount: 10 },
+        { bui_id: 1, bui_name: "上腕2", next_level: 1, need_amount: 40 },
+        { bui_id: 1, bui_name: "上腕2", next_level: 1, need_amount: 20 },
       ],
     };
   },
@@ -77,7 +62,6 @@ div.targetListArea {
   width: 90%;
   height: 500px;
   margin: 0 auto;
-  background: #b9dfff;
 }
 div.targetList {
   width: 300px;
