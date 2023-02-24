@@ -18,7 +18,7 @@
 
       <div class="avatarArea">
         <div class="avatarAreaInner">
-          <p>アバターを表示</p>
+          <img :src="require(`@/assets/avatar/${avatarImg[imgIdx]}.gif`)" />
         </div>
       </div>
 
@@ -40,6 +40,10 @@ import { useCookies } from "vue3-cookies";
 
 export default {
   name: "HomePage",
+  setup() {
+    const { cookies } = useCookies();
+    return { cookies };
+  },
   data() {
     return {
       /*buiList: [
@@ -55,6 +59,8 @@ export default {
       ],*/
       userName: "",
 
+      avatarImg: ["level0", "level1", "level2"],
+      imgIdx: 0,
       buiList: null,
       userData: null,
       /*userData: {
@@ -85,10 +91,6 @@ export default {
       ],*/
       targetData: null,
     };
-  },
-  setup() {
-    const { cookies } = useCookies();
-    return { cookies };
   },
   mounted: async function () {
     //ログイン状態を確認
@@ -235,6 +237,15 @@ export default {
     } catch (errMsg) {
       alert(errMsg);
     }
+
+    //最小のレベルを抽出
+    let minLevel = this.targetData[0].next_level - 1;
+    for (let i = 1; i < this.targetData.length; i++) {
+      if (minLevel > this.targetData[i].next_level - 1) {
+        minLevel = this.targetData[i].next_level - 1;
+      }
+    }
+    this.imgIdx = minLevel;
   },
 };
 </script>
@@ -250,19 +261,24 @@ body {
 
 div.avatarArea {
   width: 100%;
-  height: 30%;
-  background: #d3f6ff;
+  margin-top: 20px;
+  height: 20%;
 }
 
 div.avatarAreaInner {
-  width: 70%;
+  width: 80%;
   height: 100%;
   margin: 0 auto;
+  text-align: center;
+}
+div.avatarAreaInner img {
+  width: 100%;
+  height: auto;
 }
 
 div.targetListArea {
   width: 90%;
-  height: 50%;
+  height: 60%;
   margin: 0 auto;
   overflow: auto;
 }
