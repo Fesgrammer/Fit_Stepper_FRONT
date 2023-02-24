@@ -6,13 +6,40 @@
         <div class="v104_13"></div>
         <span class="v104_14">データ入力</span>
       </div>
-      <span class="v64_125">データ入力する部位を選択してください</span>
-      <div class="buttonArea">
+      <div class="buiButtonArea" v-if="buiButtonAreaIsShow">
+        <span class="v64_125">データ入力する部位を選択してください</span>
         <div v-for="i of buiList" :key="i" class="buttonList">
-          <div class="buttonListInner">
+          <div class="buttonListInner" @click="selectBui(i.bui_id, i.bui_name)">
             <p>{{ i.bui_name }}</p>
           </div>
         </div>
+      </div>
+      <div class="eventButtonArea" v-if="eventButtonAreaIsShow">
+        <span class="v64_125">データ入力する種目を選択してください</span>
+        <div v-for="j of eventList" :key="j" class="buttonList">
+          <div
+            class="buttonListInner"
+            @click="selectEvent(j.event_id, j.event_name)"
+          >
+            <p>{{ j.event_name }}</p>
+          </div>
+        </div>
+        <button @click="backToBuiList()">前へ</button>
+      </div>
+      <div class="inputArea" v-if="inputAreaIsShow">
+        <p>部位：{{ selectedBuiName }}</p>
+        <p>種目：{{ selectedEventName }}</p>
+        <p>運動量：</p>
+        <input v-model="amount" />
+        <button @click="backToEventList()">前へ</button>
+        <button @click="regist()">登録</button>
+      </div>
+      <div class="completedArea" v-if="completedAreaIsShow">
+        <h1>登録完了！</h1>
+        <h2>今回の運動による成長結果は・・・</h2>
+        <p v-if="!levelUpFlag">現状維持!</p>
+        <p v-if="levelUpFlag">レベルUP!</p>
+        <button @click="reload()">ホームへ</button>
       </div>
     </div>
   </div>
@@ -25,7 +52,21 @@ export default {
   name: "RegistPage",
   data() {
     return {
-      userId: "0",
+      userId: null,
+
+      buiButtonAreaIsShow: true,
+      eventButtonAreaIsShow: false,
+      inputAreaIsShow: false,
+      completedAreaIsShow: false,
+
+      //入力データ
+      selectedBuiId: null,
+      selectedBuiName: null,
+      slectedEventId: null,
+      selectedEventName: null,
+      amount: null,
+
+      levelUpFlag: false,
 
       buiList: null,
       eventList: null,
@@ -37,8 +78,8 @@ export default {
   },
   mounted: async function () {
     //ログイン状態を確認
-    if (this.cookies.isKey("user_id")) {
-      this.userId = this.cookies.get("user_id");
+    if (this.cookies.isKey("userId")) {
+      this.userId = this.cookies.get("userId");
     }
 
     let url;
@@ -90,6 +131,180 @@ export default {
       alert(errMsg);
     }
   },
+  methods: {
+    selectBui: function (id, name) {
+      this.selectedBuiId = id;
+      this.selectedBuiName = name;
+      this.goToEventList();
+    },
+    selectEvent: function (id, name) {
+      this.slectedEventId = id;
+      this.selectedEventName = name;
+      this.goToInputArea();
+    },
+    goToEventList: function () {
+      this.buiButtonAreaIsShow = false;
+      this.eventButtonAreaIsShow = true;
+    },
+    goToInputArea: function () {
+      this.eventButtonAreaIsShow = false;
+      this.inputAreaIsShow = true;
+    },
+    regist: async function () {
+      if (this.amount == "") {
+        alert("運動量を入力してください。");
+        return;
+      }
+      const url = "http://localhost:8080/api/motion/regMsRec";
+      const date = this.getDate();
+      const dataObj = {
+        user_id: this.userId,
+        bui_id: this.selectedBuiId,
+        event_id: this.slectedEventId,
+        amount: this.amount,
+        date: date,
+      };
+      let errMsg;
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataObj),
+        });
+        if (!response.ok) {
+          switch (response.status) {
+            default:
+              errMsg = "何らかの理由でエラーが発生しました。";
+              throw new Error(errMsg);
+          }
+        } else {
+          const responseData = await response.text();
+          if (responseData == "OK") {
+            //総運動量計算処理へ
+            this.clucTotalAmount();
+          }
+        }
+      } catch (errMsg) {
+        alert(errMsg);
+      }
+    },
+    getDate: function () {
+      const today = new Date();
+      let date_txt =
+        today.getFullYear() +
+        "-" +
+        today.getMonth() +
+        1 +
+        "-" +
+        today.getDate();
+      return date_txt;
+    },
+    clucTotalAmount: async function () {
+      //総運動量を計算
+      const url =
+        "http://localhost:8080/api/motion/clucMsSum?user_id=" +
+        this.userId +
+        "&bui_id=" +
+        this.selectedBuiId;
+      let errMsg;
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+        });
+        if (!response.ok) {
+          switch (response.status) {
+            default:
+              errMsg =
+                "何らかの理由でエラーが発生しました。（E: " +
+                response.status +
+                ")";
+              throw new Error(errMsg);
+          }
+        } else {
+          const responseData = await response.json();
+          const total_amount = responseData.sum_motion;
+          //レベルの更新へ
+          this.upDateData(total_amount);
+        }
+      } catch (errMsg) {
+        alert(errMsg);
+      }
+    },
+    upDateData: async function (amount) {
+      let new_level;
+      //新しいレベルを取得
+      let url =
+        "http://localhost:8080/api/level/clucNowLevel?bui_id=" +
+        this.selectedBuiId +
+        "&amount=" +
+        amount;
+      let errMsg;
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+        });
+        if (!response.ok) {
+          switch (response.status) {
+            default:
+              errMsg =
+                "何らかの理由でエラーが発生しました。（E: " +
+                response.status +
+                ")";
+              throw new Error(errMsg);
+          }
+        } else {
+          const responseData = await response.json();
+          new_level = responseData.now_level;
+        }
+      } catch (errMsg) {
+        alert(errMsg);
+      }
+
+      //データを更新
+      url = "http://localhost:8080/api/user/updateData";
+      const dataObj = {
+        user_id: this.userId,
+        bui_id: this.selectedBuiId,
+        new_level: new_level,
+        total_amount: amount,
+      };
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataObj),
+        });
+        if (!response.ok) {
+          switch (response.status) {
+            default:
+              errMsg = "何らかの理由でエラーが発生しました。";
+              throw new Error(errMsg);
+          }
+        } else {
+          const responseData = await response.text();
+          if (responseData == "UP") {
+            this.levelUpFlag = true;
+          }
+          alert("登録完了しました！結果画面を表示します。");
+          this.goToComplete();
+        }
+      } catch (errMsg) {
+        alert(errMsg);
+      }
+    },
+    goToComplete: function () {
+      this.inputAreaIsShow = false;
+      this.completedAreaIsShow = true;
+    },
+    reload: function () {
+      location.href = "fitstepper.html";
+    },
+  },
 };
 </script>
 
@@ -102,7 +317,17 @@ body {
   font-size: 14px;
 }
 
-div.buttonArea {
+div.buiButtonArea {
+  width: 90%;
+  height: 500px;
+  margin: 0 auto;
+}
+div.eventButtonArea {
+  width: 90%;
+  height: 500px;
+  margin: 0 auto;
+}
+div.inputArea {
   width: 90%;
   height: 500px;
   margin: 0 auto;

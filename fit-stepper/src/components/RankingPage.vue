@@ -27,8 +27,8 @@ export default {
   },
   mounted() {
     //ログイン状態を確認
-    if (this.cookies.isKey("user_id")) {
-      this.userId = this.cookies.get("user_id");
+    if (this.cookies.isKey("userId")) {
+      this.userId = this.cookies.get("userId");
     }
   },
 };

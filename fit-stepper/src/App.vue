@@ -43,7 +43,7 @@ export default {
   },
   mounted() {
     //ログイン状態を確認
-    if (this.cookies.isKey("user")) {
+    if (this.cookies.isKey("userId")) {
       location.href = "fitstepper.html";
     }
   },
@@ -75,7 +75,7 @@ export default {
           const responseData = await response.text();
           if (responseData == "OK") {
             //cookieに登録（有効期限：1ヶ月）
-            this.cookies.set("user", this.name, 60 * 60 * 24 * 30);
+            this.cookies.set("userName", this.name, 60 * 60 * 24 * 30);
             location.href = "fitstepper.html";
           } else {
             alert("このユーザは既に登録済みです。");
@@ -113,7 +113,7 @@ export default {
           const responseData = await response.text();
           if (responseData == "OK") {
             //cookieに登録（有効期限：1ヶ月）
-            this.cookies.set("user", this.name, 60 * 60 * 24 * 30);
+            this.cookies.set("userName", this.name, 60 * 60 * 24 * 30);
             location.href = "fitstepper.html";
           } else {
             alert("ユーザ名またはパスワードが間違っています。");
