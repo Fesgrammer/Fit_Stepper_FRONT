@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { useCookies } from "vue3-cookies";
+
 export default {
   name: "HomePage",
   data() {
@@ -45,8 +47,11 @@ export default {
         { bui_id: 8, bui_name: "太もも" },
         { bui_id: 9, bui_name: "ふくらはぎ" },
       ],*/
+      userName: "",
+
       buiList: null,
-      userData: {
+      userData: null,
+      /*userData: {
         user_id: 152,
         name: "test02",
         jouwan_two_level: 0,
@@ -68,17 +73,54 @@ export default {
         calf_level: 0,
         calf_amt: 40,
       },
-      /*targetData: [
+      targetData: [
         { bui_id: 1, bui_name: "上腕2", next_level: 1, need_amount: 40 },
         { bui_id: 1, bui_name: "上腕2", next_level: 1, need_amount: 20 },
       ],*/
       targetData: null,
     };
   },
+  setup() {
+    const { cookies } = useCookies();
+    return { cookies };
+  },
   mounted: async function () {
+    //ログイン状態を確認
+    if (this.cookies.isKey("user")) {
+      this.userName = this.cookies.get("user");
+    }
+
     let url;
     let dataObj;
     let errMsg;
+
+    //ログイン中のユーザデータを取得する
+    url =
+      "http://localhost:8080/api/user/getUserData?user_name=" + this.userName;
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        switch (response.status) {
+          default:
+            errMsg =
+              "何らかの理由でエラーが発生しました。（E: " +
+              response.status +
+              ")";
+            throw new Error(errMsg);
+        }
+      } else {
+        const responseData = await response.json();
+        this.userData = responseData;
+        if (!this.cookies.isKey("userid")) {
+          //cookieに登録（有効期限：1ヶ月）
+          this.cookies.set("userid", this.userData.name, 60 * 60 * 24 * 30);
+        }
+      }
+    } catch (errMsg) {
+      alert(errMsg);
+    }
 
     //部位の一覧を取得する
     url = "http://localhost:8080/api/bui/getBuiList";

@@ -1,46 +1,143 @@
 <template>
   <div>
-    <h1>各ページへのリンク＜動作確認用＞</h1>
-    <hr />
-    <a @click="changeTab(1)">ホーム・育成</a><br />
-    <a @click="changeTab(2)">運動記録登録</a><br />
-    <a @click="changeTab(3)">運動履歴</a><br />
-    <a @click="changeTab(4)">ランキング</a><br />
-
-    <!--コンポーネント-->
-    <home-page v-if="tabNo == 1" />
-    <regist-page v-if="tabNo == 2" />
-    <history-page v-if="tabNo == 3" />
-    <ranking-page v-if="tabNo == 4" />
+    <h1>Fit Stepperへようこそ</h1>
+    <div class="login_form_top">
+      <p>
+        ユーザー名、パスワードをご入力の上、<br />「ログイン」ボタンをクリックしてください。
+        新規登録の場合は、入力後、「新規登録」ボタンを押してください。
+      </p>
+    </div>
+    <div class="login_form_btm">
+      <input
+        v-model="name"
+        type="name"
+        name="user_name"
+        placeholder="ユーザー名を入力してください"
+      /><br />
+      <input
+        v-model="pass"
+        type="password"
+        name="password"
+        placeholder="パスワードを入力してください"
+      />
+    </div>
+    <button @click="login()">ログイン</button>
+    <button @click="addAccount()">新規登録</button>
   </div>
 </template>
 
 <script>
-import HomePage from "./components/HomePage.vue";
-import RegistPage from "./components/RegistPage.vue";
-import HistoryPage from "./components/HistoryPage.vue";
-import RankingPage from "./components/RankingPage.vue";
+import { useCookies } from "vue3-cookies";
 
 export default {
   name: "App",
-  components: {
-    HomePage,
-    RegistPage,
-    HistoryPage,
-    RankingPage,
-  },
   data() {
     return {
-      tabNo: 1,
+      name: "",
+      pass: "",
     };
   },
+  setup() {
+    const { cookies } = useCookies();
+    return { cookies };
+  },
+  mounted() {
+    //ログイン状態を確認
+    if (this.cookies.isKey("user")) {
+      location.href = "fitstepper.html";
+    }
+  },
   methods: {
-    changeTab: function (i) {
-      this.tabNo = i;
+    addAccount: async function () {
+      if (this.name == "" || this.pass == "") {
+        alert("ユーザー名とパスワードの両方を入力してください。");
+        return;
+      }
+      const url = "http://localhost:8080/api/user/add";
+      const dataObj = { name: this.name, pass_row: this.pass };
+      let errMsg;
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataObj),
+        });
+        if (!response.ok) {
+          switch (response.status) {
+            default:
+              errMsg = "何らかの理由でエラーが発生しました。";
+              throw new Error(errMsg);
+          }
+        } else {
+          const responseData = await response.text();
+          if (responseData == "OK") {
+            //cookieに登録（有効期限：1ヶ月）
+            this.cookies.set("user", this.name, 60 * 60 * 24 * 30);
+            location.href = "fitstepper.html";
+          } else {
+            alert("このユーザは既に登録済みです。");
+            return;
+          }
+        }
+      } catch (errMsg) {
+        alert(errMsg);
+      }
+    },
+    login: async function () {
+      if (this.name == "" || this.pass == "") {
+        alert("ユーザー名とパスワードの両方を入力してください。");
+        return;
+      }
+      const url = "http://localhost:8080/api/user/login";
+      const dataObj = { name: this.name, pass_row: this.pass };
+      let errMsg;
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataObj),
+        });
+        if (!response.ok) {
+          switch (response.status) {
+            default:
+              errMsg = "何らかの理由でエラーが発生しました。";
+              throw new Error(errMsg);
+          }
+        } else {
+          const responseData = await response.text();
+          if (responseData == "OK") {
+            //cookieに登録（有効期限：1ヶ月）
+            this.cookies.set("user", this.name, 60 * 60 * 24 * 30);
+            location.href = "fitstepper.html";
+          } else {
+            alert("ユーザ名またはパスワードが間違っています。");
+            return;
+          }
+        }
+      } catch (errMsg) {
+        alert(errMsg);
+      }
     },
   },
 };
 </script>
 
 <style>
+.login_form_btm {
+  padding: 10px 0;
+  background-color: #f7f7f7;
+  margin: 10px 0;
+}
+
+input {
+  width: 200px;
+  padding: 3px;
+  margin: 5px 0;
+}
 </style>

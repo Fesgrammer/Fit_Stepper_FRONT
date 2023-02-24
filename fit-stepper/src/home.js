@@ -1,4 +1,4 @@
 import { createApp } from "vue";
-import App from "./components/HomePage.vue";
+import MainPage from "./MainPage.vue";
 
-createApp(App).mount("#app");
+createApp(MainPage).mount("#app");

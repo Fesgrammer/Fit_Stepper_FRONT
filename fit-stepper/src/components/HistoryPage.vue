@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { useCookies } from "vue3-cookies";
+
 export default {
   name: "HistoryPage",
   data() {
@@ -34,6 +36,8 @@ export default {
         { event_id: 3, event_name: "チンニング" },
       ],*/
       recordIsNotEmpty: false,
+
+      userId: "0",
 
       eventList: null,
       buiList: null,
@@ -74,7 +78,16 @@ export default {
       ],*/
     };
   },
+  setup() {
+    const { cookies } = useCookies();
+    return { cookies };
+  },
   mounted: async function () {
+    //ログイン状態を確認
+    if (this.cookies.isKey("user_id")) {
+      this.userId = this.cookies.get("user_id");
+    }
+
     let url;
     let errMsg;
 
@@ -125,7 +138,7 @@ export default {
     }
 
     //運動履歴があるかを確認
-    url = "http://localhost:8080/api/motion/exMsRec?user_id=1";
+    url = "http://localhost:8080/api/motion/exMsRec?user_id=" + this.userId;
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -151,7 +164,7 @@ export default {
 
     if (this.recordIsNotEmpty) {
       //運動履歴を取得する
-      url = "http://localhost:8080/api/motion/getMsRec?user_id=1";
+      url = "http://localhost:8080/api/motion/getMsRec?user_id=1" + this.userId;
       try {
         const response = await fetch(url, {
           method: "GET",
