@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>履歴確認画面</h1>
     <div class="v104_3">
       <div class="v104_12">
         <div class="v104_13"></div>
@@ -201,8 +200,9 @@ body {
 
 div.recordListArea {
   width: 90%;
-  height: 500px;
-  margin: 0 auto;
+  height: 70%;
+  margin: 20px auto 0 auto;
+  overflow: auto;
 }
 div.recordList {
   width: 300px;

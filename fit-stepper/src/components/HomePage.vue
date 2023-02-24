@@ -15,6 +15,13 @@
         <div class="v104_10"></div>
         <div class="v104_11"></div>
       </div>-->
+
+      <div class="avatarArea">
+        <div class="avatarAreaInner">
+          <p>アバターを表示</p>
+        </div>
+      </div>
+
       <div class="targetListArea">
         <div v-for="i of targetData" :key="i" class="targetList">
           <div class="targetListInner">
@@ -241,10 +248,23 @@ body {
   font-size: 14px;
 }
 
+div.avatarArea {
+  width: 100%;
+  height: 30%;
+  background: #d3f6ff;
+}
+
+div.avatarAreaInner {
+  width: 70%;
+  height: 100%;
+  margin: 0 auto;
+}
+
 div.targetListArea {
   width: 90%;
-  height: 500px;
+  height: 50%;
   margin: 0 auto;
+  overflow: auto;
 }
 div.targetList {
   width: 300px;
