@@ -84,8 +84,8 @@ export default {
   },
   mounted: async function () {
     //ログイン状態を確認
-    if (this.cookies.isKey("user_id")) {
-      this.userId = this.cookies.get("user_id");
+    if (this.cookies.isKey("userId")) {
+      this.userId = this.cookies.get("userId");
     }
 
     let url;
@@ -164,7 +164,7 @@ export default {
 
     if (this.recordIsNotEmpty) {
       //運動履歴を取得する
-      url = "http://localhost:8080/api/motion/getMsRec?user_id=1" + this.userId;
+      url = "http://localhost:8080/api/motion/getMsRec?user_id=" + this.userId;
       try {
         const response = await fetch(url, {
           method: "GET",
@@ -181,6 +181,7 @@ export default {
         } else {
           const responseData = await response.json();
           this.recordList = responseData;
+          console.log(this.recordList);
         }
       } catch (errMsg) {
         alert(errMsg);

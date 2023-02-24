@@ -86,8 +86,8 @@ export default {
   },
   mounted: async function () {
     //ログイン状態を確認
-    if (this.cookies.isKey("user")) {
-      this.userName = this.cookies.get("user");
+    if (this.cookies.isKey("userName")) {
+      this.userName = this.cookies.get("userName");
     }
 
     let url;
@@ -113,9 +113,10 @@ export default {
       } else {
         const responseData = await response.json();
         this.userData = responseData;
-        if (!this.cookies.isKey("userid")) {
+        console.log(this.userData);
+        if (!this.cookies.isKey("userId")) {
           //cookieに登録（有効期限：1ヶ月）
-          this.cookies.set("userid", this.userData.name, 60 * 60 * 24 * 30);
+          this.cookies.set("userId", this.userData.user_id, 60 * 60 * 24 * 30);
         }
       }
     } catch (errMsg) {
@@ -204,6 +205,7 @@ export default {
         now_level: this.userData.calf_level,
       },
     ];
+    console.log(dataObj);
 
     try {
       const response = await fetch(url, {
