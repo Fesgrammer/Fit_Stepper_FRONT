@@ -21,7 +21,7 @@
           <div class="targetListInner">
             <p>上腕2</p>
             <p>次のレベル：</p>
-            <p>次のレベルまであと、00</p>
+            <p>次のレベルまであと、</p>
           </div>
         </div>
         <div class="targetList">
@@ -52,6 +52,12 @@ export default {
         { bui_id: 1, bui_name: "上腕2" },
         { bui_id: 2, bui_name: "上腕3" },
         { bui_id: 3, bui_name: "腕" },
+      ],
+      userData: null,
+      targetData: [
+        { bui_id: 1, need_amount: 30 },
+        { bui_id: 2, need_amount: 10 },
+        { bui_id: 2, need_amount: 10 },
       ],
     };
   },

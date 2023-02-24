@@ -6,28 +6,14 @@
         <div class="v104_13"></div>
         <span class="v104_14">データ入力</span>
       </div>
-      <div class="v104_18"></div>
-      <div class="v104_19"></div>
-      <div class="v104_20"></div>
-      <div class="v104_21"></div>
-      <div class="v104_22"></div>
-      <div class="v64_136">
-        <div class="v64_118"></div>
-        <span class="v64_117">胸</span>
-      </div>
-      <div class="v64_139">
-        <div class="v64_119"></div>
-        <span class="v64_122">脚</span>
-      </div>
-      <div class="v64_138">
-        <div class="v64_120"></div>
-        <span class="v64_123">腕</span>
-      </div>
-      <div class="v64_137">
-        <div class="v64_121"></div>
-        <span class="v64_124">お腹</span>
-      </div>
       <span class="v64_125">データ入力する部位を選択してください</span>
+      <div class="buttonArea">
+        <div v-for="i of buiList" :key="i" class="buttonList">
+          <div class="buttonListInner">
+            <p>{{ i.bui_name }}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -35,6 +21,15 @@
 <script>
 export default {
   name: "RegistPage",
+  data() {
+    return {
+      buiList: [
+        { bui_id: 1, bui_name: "上腕2" },
+        { bui_id: 2, bui_name: "上腕3" },
+        { bui_id: 3, bui_name: "胸" },
+      ],
+    };
+  },
 };
 </script>
 
@@ -45,6 +40,26 @@ export default {
 
 body {
   font-size: 14px;
+}
+
+div.buttonArea {
+  width: 90%;
+  height: 500px;
+  margin: 0 auto;
+}
+div.buttonList {
+  width: 90%;
+  height: 100px;
+  margin: 30 auto 0 auto;
+  background: #fff194;
+}
+div.buttonListInner {
+  width: 80%;
+  height: 80%;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 18pt;
+  padding-top: 0px;
 }
 
 /*ウィンドウ*/
