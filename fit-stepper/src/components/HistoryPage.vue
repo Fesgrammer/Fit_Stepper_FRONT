@@ -6,15 +6,18 @@
         <div class="v104_13"></div>
         <span class="v104_14">履歴</span>
       </div>
-      <div class="recordListArea">
+      <div class="recordListArea" v-if="recordIsNotEmpty">
         <div v-for="i of recordList" :key="i" class="recordList">
           <div class="recordListInner">
             <p>{{ i.date }}</p>
-            <p>{{ buiList[i.bui_id - 1].bui_name }}</p>
-            <p>{{ eventList[i.event_id - 1].event_name }}</p>
+            <p>{{ buiList[i.buiId - 1].bui_name }}</p>
+            <p>{{ eventList[i.eventId - 1].event_name }}</p>
             <p>{{ i.amount }}</p>
           </div>
         </div>
+      </div>
+      <div class="noRecordNoticeArea" v-if="!recordIsNotEmpty">
+        <h1>まだ運動記録がありません。</h1>
       </div>
     </div>
   </div>
@@ -25,17 +28,17 @@ export default {
   name: "HistoryPage",
   data() {
     return {
-      eventList: [
+      /*eventList: [
         { event_id: 1, event_name: "ベンチプレス" },
         { event_id: 2, event_name: "プッシュアップ" },
         { event_id: 3, event_name: "チンニング" },
-      ],
-      buiList: [
-        { bui_id: 1, bui_name: "上腕2" },
-        { bui_id: 2, bui_name: "上腕3" },
-        { bui_id: 3, bui_name: "腕" },
-      ],
-      recordList: [
+      ],*/
+      recordIsNotEmpty: false,
+
+      eventList: null,
+      buiList: null,
+      recordList: null,
+      /*recordList: [
         {
           motion_id: 1,
           user_id: 1,
@@ -68,8 +71,108 @@ export default {
           amount: 90,
           date: "aaaaa",
         },
-      ],
+      ],*/
     };
+  },
+  mounted: async function () {
+    let url;
+    let errMsg;
+
+    //種目の一覧を取得する
+    url = "http://localhost:8080/api/event/getEventList";
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        switch (response.status) {
+          default:
+            errMsg =
+              "何らかの理由でエラーが発生しました。（E: " +
+              response.status +
+              ")";
+            throw new Error(errMsg);
+        }
+      } else {
+        const responseData = await response.json();
+        this.eventList = responseData;
+      }
+    } catch (errMsg) {
+      alert(errMsg);
+    }
+
+    //部位の一覧を取得する
+    url = "http://localhost:8080/api/bui/getBuiList";
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        switch (response.status) {
+          default:
+            errMsg =
+              "何らかの理由でエラーが発生しました。（E: " +
+              response.status +
+              ")";
+            throw new Error(errMsg);
+        }
+      } else {
+        const responseData = await response.json();
+        this.buiList = responseData;
+      }
+    } catch (errMsg) {
+      alert(errMsg);
+    }
+
+    //運動履歴があるかを確認
+    url = "http://localhost:8080/api/motion/exMsRec?user_id=1";
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        switch (response.status) {
+          default:
+            errMsg =
+              "何らかの理由でエラーが発生しました。（E: " +
+              response.status +
+              ")";
+            throw new Error(errMsg);
+        }
+      } else {
+        const responseData = await response.text();
+        if (responseData == "YES") {
+          this.recordIsNotEmpty = true;
+        }
+      }
+    } catch (errMsg) {
+      alert(errMsg);
+    }
+
+    if (this.recordIsNotEmpty) {
+      //運動履歴を取得する
+      url = "http://localhost:8080/api/motion/getMsRec?user_id=1";
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+        });
+        if (!response.ok) {
+          switch (response.status) {
+            default:
+              errMsg =
+                "何らかの理由でエラーが発生しました。（E: " +
+                response.status +
+                ")";
+              throw new Error(errMsg);
+          }
+        } else {
+          const responseData = await response.json();
+          this.recordList = responseData;
+        }
+      } catch (errMsg) {
+        alert(errMsg);
+      }
+    }
   },
 };
 </script>

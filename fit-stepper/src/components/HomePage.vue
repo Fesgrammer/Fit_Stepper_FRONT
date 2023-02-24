@@ -21,7 +21,7 @@
           <div class="targetListInner">
             <p>{{ i.bui_name }}</p>
             <p>次のレベル：{{ i.next_level }}</p>
-            <p>次のレベルまであと、{{ i.need_amount }}</p>
+            <p>次のレベルまであと、{{ i.need__amount }}</p>
           </div>
         </div>
       </div>
@@ -34,17 +34,157 @@ export default {
   name: "HomePage",
   data() {
     return {
-      buiList: [
+      /*buiList: [
         { bui_id: 1, bui_name: "上腕2" },
         { bui_id: 2, bui_name: "上腕3" },
         { bui_id: 3, bui_name: "腕" },
-      ],
-      userData: null,
-      targetData: [
+        { bui_id: 4, bui_name: "腹筋" },
+        { bui_id: 5, bui_name: "肩" },
+        { bui_id: 6, bui_name: "背中" },
+        { bui_id: 7, bui_name: "お尻" },
+        { bui_id: 8, bui_name: "太もも" },
+        { bui_id: 9, bui_name: "ふくらはぎ" },
+      ],*/
+      buiList: null,
+      userData: {
+        user_id: 152,
+        name: "test02",
+        jouwan_two_level: 0,
+        jouwan_two_amt: 20,
+        jouwan_th_level: 0,
+        jouwan_th_amt: 10,
+        chest_level: 0,
+        chest_amt: 20,
+        ads_level: 0,
+        ads_amt: 30,
+        shoulder_level: 0,
+        shoulder_amt: 20,
+        back_level: 0,
+        back_amt: 10,
+        hip_level: 0,
+        hip_amt: 0,
+        thigh_level: 0,
+        thigh_amt: 5,
+        calf_level: 0,
+        calf_amt: 40,
+      },
+      /*targetData: [
         { bui_id: 1, bui_name: "上腕2", next_level: 1, need_amount: 40 },
         { bui_id: 1, bui_name: "上腕2", next_level: 1, need_amount: 20 },
-      ],
+      ],*/
+      targetData: null,
     };
+  },
+  mounted: async function () {
+    let url;
+    let dataObj;
+    let errMsg;
+
+    //部位の一覧を取得する
+    url = "http://localhost:8080/api/bui/getBuiList";
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        switch (response.status) {
+          default:
+            errMsg =
+              "何らかの理由でエラーが発生しました。（E: " +
+              response.status +
+              ")";
+            throw new Error(errMsg);
+        }
+      } else {
+        const responseData = await response.json();
+        //this.formListDataObj = responseData.formList;
+        this.buiList = responseData;
+      }
+    } catch (errMsg) {
+      alert(errMsg);
+    }
+
+    //目標の一覧を取得する。
+    url = "http://localhost:8080/api/level/getNeedMsAmt";
+    dataObj = [
+      {
+        bui_id: this.buiList[0].bui_id,
+        bui_name: this.buiList[0].bui_name,
+        now_amount: this.userData.jouwan_two_amt,
+        now_level: this.userData.jouwan_two_level,
+      },
+      {
+        bui_id: this.buiList[1].bui_id,
+        bui_name: this.buiList[1].bui_name,
+        now_amount: this.userData.jouwan_th_amt,
+        now_level: this.userData.jouwan_th_level,
+      },
+      {
+        bui_id: this.buiList[2].bui_id,
+        bui_name: this.buiList[2].bui_name,
+        now_amount: this.userData.chest_amt,
+        now_level: this.userData.chest_level,
+      },
+      {
+        bui_id: this.buiList[3].bui_id,
+        bui_name: this.buiList[3].bui_name,
+        now_amount: this.userData.ads_amt,
+        now_level: this.userData.ads_level,
+      },
+      {
+        bui_id: this.buiList[4].bui_id,
+        bui_name: this.buiList[4].bui_name,
+        now_amount: this.userData.shoulder_amt,
+        now_level: this.userData.shoulder_level,
+      },
+      {
+        bui_id: this.buiList[5].bui_id,
+        bui_name: this.buiList[5].bui_name,
+        now_amount: this.userData.back_amt,
+        now_level: this.userData.back_level,
+      },
+      {
+        bui_id: this.buiList[6].bui_id,
+        bui_name: this.buiList[6].bui_name,
+        now_amount: this.userData.hip_amt,
+        now_level: this.userData.hip_level,
+      },
+      {
+        bui_id: this.buiList[7].bui_id,
+        bui_name: this.buiList[7].bui_name,
+        now_amount: this.userData.thigh_amt,
+        now_level: this.userData.thigh_level,
+      },
+      {
+        bui_id: this.buiList[8].bui_id,
+        bui_name: this.buiList[8].bui_name,
+        now_amount: this.userData.calf_amt,
+        now_level: this.userData.calf_level,
+      },
+    ];
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataObj),
+      });
+      if (!response.ok) {
+        switch (response.status) {
+          default:
+            errMsg = "何らかの理由でエラーが発生しました。";
+            throw new Error(errMsg);
+        }
+      } else {
+        const responseData = await response.json();
+        this.targetData = responseData;
+        console.log(this.targetData);
+      }
+    } catch (errMsg) {
+      alert(errMsg);
+    }
   },
 };
 </script>
