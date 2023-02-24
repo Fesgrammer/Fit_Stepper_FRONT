@@ -6,12 +6,16 @@
         <div class="v104_13"></div>
         <span class="v104_14">履歴</span>
       </div>
-      <div class="v104_23"></div>
-      <div class="v104_18"></div>
-      <div class="v104_19"></div>
-      <div class="v104_20"></div>
-      <div class="v104_21"></div>
-      <div class="v104_22"></div>
+      <div class="recordListArea">
+        <div v-for="i of recordList" :key="i" class="recordList">
+          <div class="recordListInner">
+            <p>{{ i.date }}</p>
+            <p>{{ buiList[i.bui_id - 1].bui_name }}</p>
+            <p>{{ eventList[i.event_id - 1].event_name }}</p>
+            <p>{{ i.amount }}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -19,6 +23,54 @@
 <script>
 export default {
   name: "HistoryPage",
+  data() {
+    return {
+      eventList: [
+        { event_id: 1, event_name: "ベンチプレス" },
+        { event_id: 2, event_name: "プッシュアップ" },
+        { event_id: 3, event_name: "チンニング" },
+      ],
+      buiList: [
+        { bui_id: 1, bui_name: "上腕2" },
+        { bui_id: 2, bui_name: "上腕3" },
+        { bui_id: 3, bui_name: "腕" },
+      ],
+      recordList: [
+        {
+          motion_id: 1,
+          user_id: 1,
+          bui_id: 1,
+          event_id: 1,
+          amount: 10,
+          date: "aaaaa",
+        },
+        {
+          motion_id: 2,
+          user_id: 1,
+          bui_id: 1,
+          event_id: 2,
+          amount: 30,
+          date: "aaaaa",
+        },
+        {
+          motion_id: 3,
+          user_id: 1,
+          bui_id: 1,
+          event_id: 1,
+          amount: 10,
+          date: "aaaaa",
+        },
+        {
+          motion_id: 4,
+          user_id: 1,
+          bui_id: 1,
+          event_id: 2,
+          amount: 90,
+          date: "aaaaa",
+        },
+      ],
+    };
+  },
 };
 </script>
 
@@ -29,6 +81,23 @@ export default {
 
 body {
   font-size: 14px;
+}
+
+div.recordListArea {
+  width: 90%;
+  height: 500px;
+  margin: 0 auto;
+}
+div.recordList {
+  width: 300px;
+  height: 200px;
+  margin: 30px auto 0 auto;
+  background: #ffe37f;
+}
+div.recordListInner {
+  width: 90%;
+  height: 90%;
+  margin: 0 auto;
 }
 
 /*ウィンドウ*/
