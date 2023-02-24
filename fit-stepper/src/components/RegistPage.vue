@@ -318,13 +318,15 @@ body {
 
 div.buiButtonArea {
   width: 90%;
-  height: 500px;
-  margin: 0 auto;
+  height: 70%;
+  margin: 20px auto 0 auto;
+  overflow: auto;
 }
 div.eventButtonArea {
   width: 90%;
-  height: 500px;
-  margin: 0 auto;
+  height: 70%;
+  margin: 20px auto 0 auto;
+  overflow: auto;
 }
 div.inputArea {
   width: 90%;
