@@ -80,7 +80,6 @@ export default {
     //ログイン状態を確認
     if (this.cookies.isKey("userId")) {
       this.userId = this.cookies.get("userId");
-      alert("userは、" + this.userId);
     }
 
     console.log(this.userId);
@@ -189,7 +188,6 @@ export default {
           const responseData = await response.text();
           if (responseData == "OK") {
             //総運動量計算処理へ
-            alert("正常に登録しました。次に総運動量を計算します。");
             this.clucTotalAmount();
           }
         }
@@ -232,7 +230,6 @@ export default {
         } else {
           const responseData = await response.json();
           const total_amount = responseData.sum_motion;
-          alert("正常です。次に新しいレベルを計算します。");
           //レベルの更新へ
           this.upDateData(total_amount);
         }
@@ -265,7 +262,6 @@ export default {
         } else {
           const responseData = await response.json();
           new_level = responseData.now_level;
-          alert("正常です。最後にデータを更新します。");
         }
       } catch (errMsg) {
         alert(errMsg);
@@ -298,7 +294,7 @@ export default {
           if (responseData == "UP") {
             this.levelUpFlag = true;
           }
-          alert("全て完了しました！結果画面を表示します。");
+          alert("登録完了しました！結果画面を表示します。");
           this.goToComplete();
         }
       } catch (errMsg) {
