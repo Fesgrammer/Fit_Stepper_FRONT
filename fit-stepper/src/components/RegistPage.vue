@@ -23,12 +23,59 @@ export default {
   name: "RegistPage",
   data() {
     return {
-      buiList: [
-        { bui_id: 1, bui_name: "上腕2" },
-        { bui_id: 2, bui_name: "上腕3" },
-        { bui_id: 3, bui_name: "胸" },
-      ],
+      buiList: null,
+      eventList: null,
     };
+  },
+  mounted: async function () {
+    let url;
+    let errMsg;
+
+    //部位の一覧を取得する
+    url = "http://localhost:8080/api/bui/getBuiList";
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        switch (response.status) {
+          default:
+            errMsg =
+              "何らかの理由でエラーが発生しました。（E: " +
+              response.status +
+              ")";
+            throw new Error(errMsg);
+        }
+      } else {
+        const responseData = await response.json();
+        this.buiList = responseData;
+      }
+    } catch (errMsg) {
+      alert(errMsg);
+    }
+
+    //種目の一覧を取得する
+    url = "http://localhost:8080/api/event/getEventList";
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        switch (response.status) {
+          default:
+            errMsg =
+              "何らかの理由でエラーが発生しました。（E: " +
+              response.status +
+              ")";
+            throw new Error(errMsg);
+        }
+      } else {
+        const responseData = await response.json();
+        this.eventList = responseData;
+      }
+    } catch (errMsg) {
+      alert(errMsg);
+    }
   },
 };
 </script>
