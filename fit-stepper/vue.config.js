@@ -10,8 +10,8 @@ module.exports = {
     },
     fitstepper: {
       entry: "src/home.js",
-      template: "public/fit_stepper.html",
-      filename: "fit_stepper.html",
+      template: "public/fitstepper.html",
+      filename: "fitstepper.html",
       title: "Fit Stepper",
     },
   },

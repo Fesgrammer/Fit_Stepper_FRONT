@@ -36,16 +36,76 @@ export default {
     };
   },
   methods: {
-    addAccount: function () {
+    addAccount: async function () {
       if (this.name == "" || this.pass == "") {
         alert("ユーザー名とパスワードの両方を入力してください。");
         return;
       }
+      const url = "http://localhost:8080/api/user/add";
+      const dataObj = { name: this.name, pass_row: this.pass };
+      let errMsg;
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataObj),
+        });
+        if (!response.ok) {
+          switch (response.status) {
+            default:
+              errMsg = "何らかの理由でエラーが発生しました。";
+              throw new Error(errMsg);
+          }
+        } else {
+          const responseData = await response.text();
+          if (responseData == "OK") {
+            location.href = "fitstepper.html";
+          } else {
+            alert("このユーザは既に登録済みです。");
+            return;
+          }
+        }
+      } catch (errMsg) {
+        alert(errMsg);
+      }
     },
-    login: function () {
+    login: async function () {
       if (this.name == "" || this.pass == "") {
         alert("ユーザー名とパスワードの両方を入力してください。");
         return;
+      }
+      const url = "http://localhost:8080/api/user/login";
+      const dataObj = { name: this.name, pass_row: this.pass };
+      let errMsg;
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataObj),
+        });
+        if (!response.ok) {
+          switch (response.status) {
+            default:
+              errMsg = "何らかの理由でエラーが発生しました。";
+              throw new Error(errMsg);
+          }
+        } else {
+          const responseData = await response.text();
+          if (responseData == "OK") {
+            location.href = "fitstepper.html";
+          } else {
+            alert("ユーザ名またはパスワードが間違っています。");
+            return;
+          }
+        }
+      } catch (errMsg) {
+        alert(errMsg);
       }
     },
   },
