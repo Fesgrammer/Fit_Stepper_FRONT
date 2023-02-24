@@ -12,8 +12,25 @@
 </template>
 
 <script>
+import { useCookies } from "vue3-cookies";
+
 export default {
   name: "RankingPage",
+  data() {
+    return {
+      userId: "0",
+    };
+  },
+  setup() {
+    const { cookies } = useCookies();
+    return { cookies };
+  },
+  mounted() {
+    //ログイン状態を確認
+    if (this.cookies.isKey("user_id")) {
+      this.userId = this.cookies.get("user_id");
+    }
+  },
 };
 </script>
 

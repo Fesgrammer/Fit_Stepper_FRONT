@@ -19,15 +19,28 @@
 </template>
 
 <script>
+import { useCookies } from "vue3-cookies";
+
 export default {
   name: "RegistPage",
   data() {
     return {
+      userId: "0",
+
       buiList: null,
       eventList: null,
     };
   },
+  setup() {
+    const { cookies } = useCookies();
+    return { cookies };
+  },
   mounted: async function () {
+    //ログイン状態を確認
+    if (this.cookies.isKey("user_id")) {
+      this.userId = this.cookies.get("user_id");
+    }
+
     let url;
     let errMsg;
 

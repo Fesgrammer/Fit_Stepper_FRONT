@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { useCookies } from "vue3-cookies";
+
 export default {
   name: "App",
   data() {
@@ -34,6 +36,16 @@ export default {
       name: "",
       pass: "",
     };
+  },
+  setup() {
+    const { cookies } = useCookies();
+    return { cookies };
+  },
+  mounted() {
+    //ログイン状態を確認
+    if (this.cookies.isKey("user")) {
+      location.href = "fitstepper.html";
+    }
   },
   methods: {
     addAccount: async function () {
@@ -62,6 +74,8 @@ export default {
         } else {
           const responseData = await response.text();
           if (responseData == "OK") {
+            //cookieに登録（有効期限：1ヶ月）
+            this.cookies.set("user", this.name, 60 * 60 * 24 * 30);
             location.href = "fitstepper.html";
           } else {
             alert("このユーザは既に登録済みです。");
@@ -98,6 +112,8 @@ export default {
         } else {
           const responseData = await response.text();
           if (responseData == "OK") {
+            //cookieに登録（有効期限：1ヶ月）
+            this.cookies.set("user", this.name, 60 * 60 * 24 * 30);
             location.href = "fitstepper.html";
           } else {
             alert("ユーザ名またはパスワードが間違っています。");
