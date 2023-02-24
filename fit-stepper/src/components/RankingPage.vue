@@ -6,12 +6,7 @@
         <div class="v104_13"></div>
         <span class="v104_14">履歴</span>
       </div>
-      <div class="v104_23"></div>
-      <div class="v104_18"></div>
-      <div class="v104_19"></div>
-      <div class="v104_20"></div>
-      <div class="v104_21"></div>
-      <div class="v104_22"></div>
+      <h1>工事中です。</h1>
     </div>
   </div>
 </template>
