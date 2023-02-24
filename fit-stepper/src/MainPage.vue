@@ -1,17 +1,26 @@
 <template>
   <div>
-    <h1>各ページへのリンク＜動作確認用＞</h1>
-    <hr />
-    <a @click="changeTab(1)">ホーム・育成</a><br />
-    <a @click="changeTab(2)">運動記録登録</a><br />
-    <a @click="changeTab(3)">運動履歴</a><br />
-    <a @click="changeTab(4)">ランキング</a><br />
-
     <!--コンポーネント-->
     <home-page v-if="tabNo == 1" />
     <regist-page v-if="tabNo == 2" />
     <history-page v-if="tabNo == 3" />
     <ranking-page v-if="tabNo == 4" />
+
+    <!--タブエリア-->
+    <div class="tabArea">
+      <div class="tabContents" @click="changeTab(1)">
+        <div class="tabContentsInner">ホーム</div>
+      </div>
+      <div class="tabContents">
+        <div class="tabContentsInner" @click="changeTab(2)">記録</div>
+      </div>
+      <div class="tabContents">
+        <div class="tabContentsInner" @click="changeTab(3)">履歴</div>
+      </div>
+      <div class="tabContents">
+        <div class="tabContentsInner" @click="changeTab(4)">ランキング</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -43,4 +52,22 @@ export default {
 </script>
 
 <style>
+div.tabArea {
+  width: 393px;
+  height: 100px;
+  background: #cacaca;
+}
+div.tabContents {
+  width: 25%;
+  height: 100%;
+  background: #8ee99f;
+  float: left;
+  cursor: pointer;
+}
+div.tabContentsInner {
+  width: 90%;
+  height: 90%;
+  background: #ffffff;
+  margin: 0 auto;
+}
 </style>
