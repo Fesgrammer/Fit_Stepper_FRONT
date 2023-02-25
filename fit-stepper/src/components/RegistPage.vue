@@ -6,7 +6,7 @@
         <span class="v104_14">データ入力</span>
       </div>
       <div class="buiButtonArea" v-if="buiButtonAreaIsShow">
-        <span class="v64_125">データ入力する部位を選択してください</span>
+        <h2>部位を選択してください。</h2>
         <div v-for="i of buiList" :key="i" class="buttonList">
           <div class="buttonListInner" @click="selectBui(i.bui_id, i.bui_name)">
             <p>{{ i.bui_name }}</p>
@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="eventButtonArea" v-if="eventButtonAreaIsShow">
-        <span class="v64_125">データ入力する種目を選択してください</span>
+        <h2>種目を選択してください。</h2>
         <div v-for="j of eventList" :key="j" class="buttonList">
           <div
             class="buttonListInner"
@@ -26,18 +26,24 @@
         <button @click="backToBuiList()">前へ</button>
       </div>
       <div class="inputArea" v-if="inputAreaIsShow">
+        <h2>運動量を入力して、「登録」を押してください。</h2>
         <p>部位：{{ selectedBuiName }}</p>
         <p>種目：{{ selectedEventName }}</p>
         <p>運動量：</p>
-        <input v-model="amount" />
+        <input v-model="amount" /><br />
         <button @click="backToEventList()">前へ</button>
         <button @click="regist()">登録</button>
       </div>
       <div class="completedArea" v-if="completedAreaIsShow">
         <h1>登録完了！</h1>
         <h2>今回の運動による成長結果は・・・</h2>
-        <p v-if="!levelUpFlag">現状維持!</p>
-        <p v-if="levelUpFlag">レベルUP!</p>
+        <img v-if="!levelUpFlag" src="@/assets/level/keep.png" alt="現状維持" />
+        <img
+          v-if="levelUpFlag"
+          src="@/assets/level/up.png"
+          alt="レベルアップ"
+        />
+        <br />
         <button @click="reload()">ホームへ</button>
       </div>
     </div>
@@ -150,7 +156,7 @@ export default {
       this.inputAreaIsShow = true;
     },
     regist: async function () {
-      if (this.amount == "") {
+      if (this.amount == null) {
         alert("運動量を入力してください。");
         return;
       }
@@ -333,11 +339,23 @@ div.inputArea {
   height: 500px;
   margin: 0 auto;
 }
+div.completedArea {
+  width: 90%;
+  height: 100%;
+  text-align: center;
+}
+
+div.completedArea img {
+  width: 50%;
+  height: auto;
+}
 div.buttonList {
   width: 90%;
-  height: 100px;
-  margin: 30 auto 0 auto;
-  background: #fff194;
+  height: 80px;
+  margin: 50 auto 0 auto;
+  border: #808080 solid 2px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 div.buttonListInner {
   width: 80%;
@@ -346,6 +364,7 @@ div.buttonListInner {
   text-align: center;
   font-size: 18pt;
   padding-top: 0px;
+  font-size: 15pt;
 }
 
 /*ウィンドウ*/

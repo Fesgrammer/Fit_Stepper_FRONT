@@ -11,7 +11,7 @@
             <p>{{ i.date }}</p>
             <p>{{ buiList[i.buiId - 1].bui_name }}</p>
             <p>{{ eventList[i.eventId - 1].event_name }}</p>
-            <p>{{ i.amount }}</p>
+            <p>{{ i.amount }}回</p>
           </div>
         </div>
       </div>
@@ -206,14 +206,21 @@ div.recordListArea {
 }
 div.recordList {
   width: 300px;
-  height: 200px;
+  height: 150px;
   margin: 30px auto 0 auto;
-  background: #ffe37f;
+  background: #ffffff;
+  border: #808080 solid 2px;
+  border-radius: 10px;
 }
 div.recordListInner {
   width: 90%;
   height: 90%;
   margin: 0 auto;
+}
+
+div.recordListInner p {
+  font-size: 16pt;
+  line-height: 10px;
 }
 
 /*ウィンドウ*/

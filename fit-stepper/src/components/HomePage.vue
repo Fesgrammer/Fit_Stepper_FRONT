@@ -25,9 +25,9 @@
       <div class="targetListArea">
         <div v-for="i of targetData" :key="i" class="targetList">
           <div class="targetListInner">
-            <p>{{ i.bui_name }}</p>
+            <p class="buiName">{{ i.bui_name }}</p>
             <p>次のレベル：{{ i.next_level }}</p>
-            <p>次のレベルまであと、{{ i.need__amount }}</p>
+            <p>次のレベルまであと、{{ i.need__amount }}回</p>
           </div>
         </div>
       </div>
@@ -286,12 +286,21 @@ div.targetList {
   width: 300px;
   height: 120px;
   margin: 30px auto 0 auto;
-  background: #ffe37f;
+  background: #ffffff;
+  border: #808080 solid 2px;
+  border-radius: 10px;
 }
 div.targetListInner {
   width: 90%;
   height: 90%;
   margin: 0 auto;
+}
+div.targetListInner p {
+  font-size: 16pt;
+  line-height: 10px;
+}
+p.buiName {
+  font-weight: bold;
 }
 
 /*ウィンドウ*/
