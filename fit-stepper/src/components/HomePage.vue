@@ -34,7 +34,7 @@
 
       <div class="logoutButtonArea">
         <div class="logoutButton">
-          <div class="logoutButtonInner">ログアウト</div>
+          <div class="logoutButtonInner" @click="logout()">ログアウト</div>
         </div>
       </div>
     </div>
@@ -257,6 +257,15 @@ export default {
     }
     this.imgIdx = minLevel;
   },
+  methods: {
+    logout: function () {
+      //cookieを削除
+      this.cookies.remove("userId");
+      this.cookies.remove("userName");
+      //ログイン画面へ戻る
+      location.href = "index.html";
+    },
+  },
 };
 </script>
 
@@ -325,6 +334,7 @@ div.logoutButton {
   margin: 0 auto;
   padding: 10px;
   text-align: center;
+  cursor: pointer;
 }
 div.logoutButtonInner {
   width: 80%;
