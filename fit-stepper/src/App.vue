@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <h1>Fit Stepperへようこそ</h1>
+  <div class="main">
+    <div class="logoArea">
+      <img src="@/assets/Fit_Stepper.png" alt="FitStepper" />
+      <h1>Fit Stepper</h1>
+    </div>
+
     <div class="login_form_top">
       <p>
         ユーザー名、パスワードをご入力の上、<br />「ログイン」ボタンをクリックしてください。
@@ -129,6 +133,21 @@ export default {
 </script>
 
 <style>
+div.main {
+  width: 393px;
+  height: auto;
+}
+div.logoArea {
+  width: 50%;
+  height: auto;
+  text-align: center;
+  margin: 0 auto;
+}
+div.logoArea img {
+  width: 50%;
+  height: auto;
+  text-align: center;
+}
 .login_form_btm {
   padding: 10px 0;
   background-color: #f7f7f7;
