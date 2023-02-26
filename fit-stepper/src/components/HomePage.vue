@@ -31,6 +31,12 @@
           </div>
         </div>
       </div>
+
+      <div class="logoutButtonArea">
+        <div class="logoutButton">
+          <div class="logoutButtonInner">ログアウト</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -103,8 +109,9 @@ export default {
     let errMsg;
 
     //ログイン中のユーザデータを取得する
-    //url ="http://localhost:8080/api/user/getUserData?user_name=" + this.userName;
-    url = "/api/user/getUserData?user_name=" + this.userName;
+    url =
+      "http://localhost:8080/api/user/getUserData?user_name=" + this.userName;
+    //url = "/api/user/getUserData?user_name=" + this.userName;
 
     try {
       const response = await fetch(url, {
@@ -133,8 +140,8 @@ export default {
     }
 
     //部位の一覧を取得する
-    //url = "http://localhost:8080/api/bui/getBuiList";
-    url = "/api/bui/getBuiList";
+    url = "http://localhost:8080/api/bui/getBuiList";
+    //url = "/api/bui/getBuiList";
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -158,8 +165,8 @@ export default {
     }
 
     //目標の一覧を取得する。
-    //url = "http://localhost:8080/api/level/getNeedMsAmt";
-    url = "/api/level/getNeedMsAmt";
+    url = "http://localhost:8080/api/level/getNeedMsAmt";
+    //url = "/api/level/getNeedMsAmt";
     dataObj = [
       {
         bui_id: this.buiList[0].bui_id,
@@ -281,7 +288,7 @@ div.avatarAreaInner img {
 
 div.targetListArea {
   width: 90%;
-  height: 60%;
+  height: 55%;
   margin: 0 auto;
   overflow: auto;
 }
@@ -304,6 +311,25 @@ div.targetListInner p {
 }
 p.buiName {
   font-weight: bold;
+}
+
+div.logoutButtonArea {
+  width: 80%;
+  height: 50px;
+  margin: 0 auto;
+}
+div.logoutButton {
+  width: 60%;
+  height: 80%;
+  background: #b8dcff;
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
+}
+div.logoutButtonInner {
+  width: 80%;
+  height: 40%;
+  margin: auto;
 }
 
 /*ウィンドウ*/
