@@ -57,8 +57,8 @@ export default {
         alert("ユーザー名とパスワードの両方を入力してください。");
         return;
       }
-      const url = "http://localhost:8080/api/user/add";
-      //const url = "/api/user/add";
+      //const url = "http://localhost:8080/api/user/add";
+      const url = "/api/user/add";
       const dataObj = { name: this.name, pass_row: this.pass };
       let errMsg;
 
@@ -96,8 +96,8 @@ export default {
         alert("ユーザー名とパスワードの両方を入力してください。");
         return;
       }
-      const url = "http://localhost:8080/api/user/login";
-      //const url = "/api/user/login";
+      //const url = "http://localhost:8080/api/user/login";
+      const url = "/api/user/login";
       const dataObj = { name: this.name, pass_row: this.pass };
       let errMsg;
 
