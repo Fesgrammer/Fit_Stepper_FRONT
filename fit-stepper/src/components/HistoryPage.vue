@@ -91,7 +91,8 @@ export default {
     let errMsg;
 
     //種目の一覧を取得する
-    url = "http://localhost:8080/api/event/getEventList";
+    //url = "http://localhost:8080/api/event/getEventList";
+    url = "/api/event/getEventList";
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -114,7 +115,8 @@ export default {
     }
 
     //部位の一覧を取得する
-    url = "http://localhost:8080/api/bui/getBuiList";
+    //url = "http://localhost:8080/api/bui/getBuiList";
+    url = "/api/bui/getBuiList";
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -137,7 +139,8 @@ export default {
     }
 
     //運動履歴があるかを確認
-    url = "http://localhost:8080/api/motion/exMsRec?user_id=" + this.userId;
+    //url = "http://localhost:8080/api/motion/exMsRec?user_id=" + this.userId;
+    url = "/api/motion/exMsRec?user_id=" + this.userId;
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -163,7 +166,8 @@ export default {
 
     if (this.recordIsNotEmpty) {
       //運動履歴を取得する
-      url = "http://localhost:8080/api/motion/getMsRec?user_id=" + this.userId;
+      //url = "http://localhost:8080/api/motion/getMsRec?user_id=" + this.userId;
+      url = "/api/motion/getMsRec?user_id=" + this.userId;
       try {
         const response = await fetch(url, {
           method: "GET",

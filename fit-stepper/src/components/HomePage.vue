@@ -103,8 +103,9 @@ export default {
     let errMsg;
 
     //ログイン中のユーザデータを取得する
-    url =
-      "http://localhost:8080/api/user/getUserData?user_name=" + this.userName;
+    //url ="http://localhost:8080/api/user/getUserData?user_name=" + this.userName;
+    url = "/api/user/getUserData?user_name=" + this.userName;
+
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -132,7 +133,8 @@ export default {
     }
 
     //部位の一覧を取得する
-    url = "http://localhost:8080/api/bui/getBuiList";
+    //url = "http://localhost:8080/api/bui/getBuiList";
+    url = "/api/bui/getBuiList";
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -156,7 +158,8 @@ export default {
     }
 
     //目標の一覧を取得する。
-    url = "http://localhost:8080/api/level/getNeedMsAmt";
+    //url = "http://localhost:8080/api/level/getNeedMsAmt";
+    url = "/api/level/getNeedMsAmt";
     dataObj = [
       {
         bui_id: this.buiList[0].bui_id,

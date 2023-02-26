@@ -91,7 +91,8 @@ export default {
     let errMsg;
 
     //部位の一覧を取得する
-    url = "http://localhost:8080/api/bui/getBuiList";
+    //url = "http://localhost:8080/api/bui/getBuiList";
+    url = "/api/bui/getBuiList";
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -114,7 +115,8 @@ export default {
     }
 
     //種目の一覧を取得する
-    url = "http://localhost:8080/api/event/getEventList";
+    //url = "http://localhost:8080/api/event/getEventList";
+    url = "/api/event/getEventList";
     try {
       const response = await fetch(url, {
         method: "GET",
@@ -160,7 +162,8 @@ export default {
         alert("運動量を入力してください。");
         return;
       }
-      const url = "http://localhost:8080/api/motion/regMsRec";
+      //const url = "http://localhost:8080/api/motion/regMsRec";
+      const url = "/api/motion/regMsRec";
       const date = this.getDate();
       const dataObj = {
         user_id: this.userId,
@@ -209,11 +212,13 @@ export default {
     },
     clucTotalAmount: async function () {
       //総運動量を計算
+      //const url ="http://localhost:8080/api/motion/clucMsSum?user_id=" +this.userId +"&bui_id=" +this.selectedBuiId;
       const url =
-        "http://localhost:8080/api/motion/clucMsSum?user_id=" +
+        "/api/motion/clucMsSum?user_id=" +
         this.userId +
         "&bui_id=" +
         this.selectedBuiId;
+
       let errMsg;
       try {
         const response = await fetch(url, {
@@ -241,8 +246,9 @@ export default {
     upDateData: async function (amount) {
       let new_level;
       //新しいレベルを取得
+      //let url ="http://localhost:8080/api/level/clucNowLevel?bui_id=" +this.selectedBuiId +"&amount=" +amount;
       let url =
-        "http://localhost:8080/api/level/clucNowLevel?bui_id=" +
+        "/api/level/clucNowLevel?bui_id=" +
         this.selectedBuiId +
         "&amount=" +
         amount;
@@ -269,7 +275,8 @@ export default {
       }
 
       //データを更新
-      url = "http://localhost:8080/api/user/updateData";
+      //url = "http://localhost:8080/api/user/updateData";
+      url = "/api/user/updateData";
       const dataObj = {
         user_id: this.userId,
         bui_id: this.selectedBuiId,
